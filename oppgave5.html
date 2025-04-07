@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 5</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 5: Merkelig Tellesystem</h1>
+        <p>Professor Sigma brukte et tellesystem basert på 6 (kun sifrene 0, 1, 2, 3, 4, 5). Han skrev ned alderen sin som <span class="code-snippet">213</span> (base-6) i notatene sine.</p>
+        <p>Hva er alderen hans i vårt vanlige titallssystem (base-10)? Koden er dette tallet.</p>
+
+        <label for="answer5">Skriv inn alderen (base-10):</label><br>
+        <input type="text" id="answer5" name="answer5" placeholder="Alder som vanlig tall">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "81"; // 2*36 + 1*6 + 3*1 = 72 + 6 + 3 = 81
+            const brukerSvar = document.getElementById('answer5').value.trim();
+            const oppgaveId = 'oppgave5';
+            const nesteSide = 'oppgave6.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
