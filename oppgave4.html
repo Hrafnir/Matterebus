@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 4</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 4: Robot Vokterne</h1>
+        <p>Fire roboter (Rød, Blå, Grønn, Gul) vokter fire utganger (Nord, Sør, Øst, Vest). Finn ut hvilken robot som vokter <strong>Nord-utgangen</strong> ved hjelp av disse hintene:</p>
+        <ol style="text-align: left; display: inline-block;">
+            <li>Rød robot står ikke ved Vest eller Sør.</li>
+            <li>Blå robot står ved siden av Grønn robot.</li>
+            <li>Gul robot står lengst unna Rød robot (målt i antall 'steg' N-Ø-S-V).</li>
+            <li>Grønn robot står ved Øst-utgangen.</li>
+        </ol>
+        <p>Koden er navnet på roboten ved Nord-utgangen (med store bokstaver).</p>
+
+        <label for="answer4">Skriv inn navnet på roboten:</label><br>
+        <input type="text" id="answer4" name="answer4" placeholder="Fargen på roboten">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "RØD";
+            const brukerSvar = document.getElementById('answer4').value.trim().toUpperCase();
+            const oppgaveId = 'oppgave4';
+            const nesteSide = 'oppgave5.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
