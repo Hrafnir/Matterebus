@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Start</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Velkommen til Den Digitale Labyrinten!</h1>
+        <p>Du er fanget! Bare ved å bruke dine evner innen logikk og matematikk kan du finne veien ut. Løs oppgavene og bruk svaret som kode for å åpne neste dør.</p>
+        <h2>Oppgave 1: Tallmønsteret</h2>
+        <p>Labyrintens første dør voktes av et tallmønster. Koden er <strong>summen</strong> av de tre neste tallene i sekvensen:
+            <br> 1, 2, 4, 7, 11, __, __, __
+        </p>
+        <label for="answer1">Skriv inn koden:</label><br>
+        <input type="text" id="answer1" name="answer1" placeholder="Summen av de tre tallene">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "67"; // 16+22+29
+            const brukerSvar = document.getElementById('answer1').value.trim();
+            const oppgaveId = 'oppgave1';
+            const nesteSide = 'oppgave2.html';
+
+            if (brukerSvar === korrektSvar) {
+                sessionStorage.removeItem('feil_' + oppgaveId); // Nullstill feil ved suksess
+                window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop()); // Lagre nåværende filnavn
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
