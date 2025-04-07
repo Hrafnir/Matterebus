@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 8</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 8: Symbolenes Vekt</h1>
+        <p>Hver figur har en unik, positiv heltallsverdi. Finn verdien av en <strong>Sirkel (⚪)</strong> basert på disse balanserte vektene:</p>
+
+        <div class="vekt-container">
+            <div class="vekt-side"><span class="vekt-symbol">⚪</span></div>
+            <span class="erlik">=</span>
+            <div class="vekt-side"><span class="vekt-symbol">▲</span><span class="pluss">+</span><span class="vekt-symbol">■</span></div>
+        </div>
+         <div class="vekt-container">
+            <div class="vekt-side"><span class="vekt-symbol">▲</span></div>
+            <span class="erlik">=</span>
+            <div class="vekt-side"><span class="vekt-symbol">■</span><span class="pluss">+</span><span class="vekt-symbol">■</span></div>
+        </div>
+         <div class="vekt-container">
+            <div class="vekt-side"><span class="vekt-symbol">▲</span><span class="pluss">+</span><span class="vekt-symbol">■</span></div>
+             <span class="erlik">=</span>
+            <div class="vekt-side" style="font-size: 1.5em; font-weight: bold;">15</div>
+        </div>
+
+        <p>Koden er verdien til Sirkelen.</p>
+
+        <label for="answer8">Skriv inn verdien til Sirkel:</label><br>
+        <input type="text" id="answer8" name="answer8" placeholder="Verdi av ⚪">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "15"; // Firkant=5, Trekant=10, Sirkel=15
+            const brukerSvar = document.getElementById('answer8').value.trim();
+            const oppgaveId = 'oppgave8';
+            const nesteSide = 'oppgave9.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
