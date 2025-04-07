@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 10</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 10: Den Mystiske Maskinen</h1>
+        <p>Du finner en maskin som transformerer tall. Her er noen eksempler på hva den gjør:</p>
+        <ul>
+            <li>Inn: 2 -> Ut: 7</li>
+            <li>Inn: 5 -> Ut: 16</li>
+            <li>Inn: 8 -> Ut: 25</li>
+        </ul>
+        <p>Hva blir resultatet (Ut) hvis du sender tallet <strong>10</strong> inn i maskinen? Koden er dette resultatet.</p>
+
+        <label for="answer10">Skriv inn resultatet for 10:</label><br>
+        <input type="text" id="answer10" name="answer10" placeholder="Hva kommer ut?">
+        <br>
+        <button onclick="sjekkSvar()">Åpne siste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "31"; // Regel: inn * 3 + 1
+            const brukerSvar = document.getElementById('answer10').value.trim();
+            const oppgaveId = 'oppgave10';
+            const nesteSide = 'ferdig.html'; // Siste oppgave fører til ferdigsiden
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
