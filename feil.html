@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feil Svar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Uff da...</h1>
+        <p>Det var dessverre ikke riktig kode.</p>
+
+        <div class="hint-section">
+            <strong>Hint:</strong>
+            <p id="hint-display">Laster hint...</p>
+        </div>
+
+        <div class="timer-section">
+            <p>Du må vente <span id="timer-display">--</span> sekunder før du kan prøve igjen.</p>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const taskId = sessionStorage.getItem('currentTaskID');
+            const returSide = sessionStorage.getItem('returnTo') || 'index.html'; // Fallback
+            const feilAntall = parseInt(sessionStorage.getItem('feil_' + taskId) || '1'); // Minst 1 feil
+
+            // Hint Database (Må oppdateres med faktiske hint)
+             const hintDatabase = {
+                 'oppgave1': [
+                     "Hint 1: Se på *økningen* mellom tallene.",
+                     "Hint 2: Hva er 2-1? Hva er 4-2? Hva er 7-4?",
+                     "Hint 3: Økningen er +1, +2, +3, +4... Fortsett mønsteret for å finne de tre neste tallene, og summer dem."
+                 ],
+                 'oppgave2': [
+                     "Hint 1: Symbolene kommer fra et gammelt chiffer. Se på nøkkelbildet.",
+                     "Hint 2: Finn symbolet for den første bokstaven, så den andre, osv.",
+                     "Hint 3: Ordet som søkes er 'NESTE'." // Veldig direkte hint
+                 ],
+                  'oppgave3': [
+                     "Hint 1: Hvert siffer i et binært tall representerer en potens av 2 (1, 2, 4, 8, 16, 32, 64, 128... fra høyre).",
+                     "Hint 2: For 01010111: (0*128)+(1*64)+(0*32)+(1*16)+(0*8)+(1*4)+(1*2)+(1*1) = ? Gjør det samme for de andre.",
+                     "Hint 3: De tre tallene er 87, 79 og 87. Summer dem."
+                 ],
+                 'oppgave4': [
+                     "Hint 1: Start med det du vet sikkert: Grønn = Øst.",
+                     "Hint 2: Hvor kan Rød stå hvis den *ikke* er Vest, Sør eller Øst?",
+                     "Hint 3: Siden Rød må være Nord, hvor må Gul være for å være lengst unna (motsatt)? Hvor blir Blå da?"
+                 ],
+                 'oppgave5': [
+                     "Hint 1: I base-6 representerer sifrene (fra høyre) 6^0 (1), 6^1 (6), 6^2 (36), osv.",
+                     "Hint 2: Tallet '213' i base-6 betyr (2 * 6^2) + (1 * 6^1) + (3 * 6^0).",
+                     "Hint 3: Regn ut 2*36 + 1*6 + 3*1."
+                 ],
+                  'oppgave6': [
+                     "Hint 1: Det er 4 små trekanter (i hjørnene).",
+                     "Hint 2: Diagonalene deler firkanten i større trekanter. Hvor mange?",
+                     "Hint 3: Det er 4 små + 4 store = 8 totalt."
+                 ],
+                  'oppgave7': [
+                     "Hint 1: Tenk baklengs. Hva var tallet *før* det ble doblet til 50?",
+                     "Hint 2: Når du har tallet før doblingen, hva var det *før* 7 ble trukket fra?",
+                     "Hint 3: Når du har tallet før -7, hva var det *før* det ble ganget med 4?"
+                 ],
+                 'oppgave8': [
+                    "Hint 1: Start med den enkleste ligningen. Vekt 3: ▲ + ■ = 15.",
+                    "Hint 2: Bruk Vekt 2 (▲ = ■ + ■) og sett inn i Vekt 3. Da har du en ligning med bare ■.",
+                    "Hint 3: Finn ■, deretter ▲, og til slutt ⚪ ved å bruke Vekt 1."
+                 ],
+                 'oppgave9': [
+                    "Hint 1: List opp tallene etter 10: 11, 12, 13, 14, 15, 16, 17, 18...",
+                    "Hint 2: Hvilke av disse er primtall (kun delelig med 1 og seg selv)?",
+                    "Hint 3: De tre første primtallene etter 10 er 11, 13, og 17. Multipliser dem."
+                 ],
+                 'oppgave10': [
+                    "Hint 1: Se etter et mønster mellom 'Inn' og 'Ut'. Hva skjer fra 2 til 7? Fra 5 til 16?",
+                    "Hint 2: Prøv å gange 'Inn' med et tall, og deretter legge til/trekke fra et annet tall. (Inn * A + B = Ut)",
+                    "Hint 3: Regeln er 'Inn * 3 + 1'. Bruk den på tallet 10."
+                 ]
+             };
+
+            let hintTekst = "Les oppgaven nøye igjen."; // Standard hint
+            if (hintDatabase[taskId] && hintDatabase[taskId].length > 0) {
+                // Velg hint basert på antall feil, men ikke gå utover antall tilgjengelige hint
+                let hintNiva = Math.min(feilAntall - 1, hintDatabase[taskId].length - 1);
+                hintTekst = hintDatabase[taskId][hintNiva];
+            }
+            document.getElementById('hint-display').innerText = hintTekst;
+
+            // Start nedtelling
+            let tidIgjen = 10 * feilAntall;
+            // Sett et tak på ventetid? f.eks. maks 60 sekunder
+            tidIgjen = Math.min(tidIgjen, 60);
+
+            const timerDisplay = document.getElementById('timer-display');
+            timerDisplay.innerText = tidIgjen;
+
+            let nedtellingsInterval = setInterval(() => {
+                tidIgjen--;
+                timerDisplay.innerText = tidIgjen;
+                if (tidIgjen <= 0) {
+                    clearInterval(nedtellingsInterval);
+                    window.location.href = returSide; // Gå tilbake til oppgaven
+                }
+            }, 1000); // Kjør hvert sekund
+        };
+    </script>
+</body>
+</html>
