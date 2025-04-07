@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 7</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 7: Professorens Gåte</h1>
+        <p>"Jeg tenker på et tall," mumler Professor Sigma. "Hvis jeg ganger tallet med 4, trekker fra 7, og deretter dobler resultatet, får jeg 50."</p>
+        <p>Hvilket tall tenkte professoren på i starten? Koden er dette tallet.</p>
+
+        <label for="answer7">Skriv inn tallet:</label><br>
+        <input type="text" id="answer7" name="answer7" placeholder="Starttallet">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "8"; // (50/2) + 7 = 32 -> 32 / 4 = 8
+            const brukerSvar = document.getElementById('answer7').value.trim();
+            const oppgaveId = 'oppgave7';
+            const nesteSide = 'oppgave8.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
