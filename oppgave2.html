@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 2: Kryptisk Symbol</h1>
+        <p>Du fant en gammel nøkkelartefakt og en beskjed risset inn på veggen. Bruk nøkkelen til å tyde beskjeden. Koden for å komme videre er ordet du finner.</p>
+        <img src="img/pigpen_key.png" alt="Pigpen Chiffer Nøkkel" class="pigpen-key">
+        <p>Beskjeden:</p>
+        <!-- Her må du lage Pigpen-symbolene for NESTE -->
+        <!-- La oss bruke en tekstlig representasjon foreløpig -->
+        <p style="font-size: 2em; letter-spacing: 5px;">[symbol for N] [symbol for E] [symbol for S] [symbol for T] [symbol for E]</p>
+        <p>(Du må lage et bilde av symbolene over, eller finne en font)</p>
+
+        <label for="answer2">Skriv inn ordet:</label><br>
+        <input type="text" id="answer2" name="answer2" placeholder="Ordet fra symbolene">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "NESTE";
+            const brukerSvar = document.getElementById('answer2').value.trim().toUpperCase(); // Gjør om til store bokstaver
+            const oppgaveId = 'oppgave2';
+            const nesteSide = 'oppgave3.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
