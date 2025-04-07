@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 9</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 9: Primtalls-låsen</h1>
+        <p>Den neste låsen krever en spesiell nøkkel. Koden er <strong>produktet</strong> (resultatet av multiplikasjon) av de tre første primtallene som kommer <em>etter</em> tallet 10.</p>
+        <p>(Husk: Et primtall er et tall større enn 1 som kun er delelig med 1 og seg selv.)</p>
+
+        <label for="answer9">Skriv inn produktet:</label><br>
+        <input type="text" id="answer9" name="answer9" placeholder="Produktet av de tre primtallene">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "2431"; // 11 * 13 * 17
+            const brukerSvar = document.getElementById('answer9').value.trim();
+            const oppgaveId = 'oppgave9';
+            const nesteSide = 'oppgave10.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
