@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Digitale Labyrinten - Oppgave 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oppgave 3: Binær Beskjed</h1>
+        <p>En dataterminal viser tre tall i binærkode. Oversett hvert tall til vårt vanlige titallssystem (base-10). Koden for å komme videre er <strong>summen</strong> av disse tre tallene.</p>
+        <p>Tallene er:</p>
+        <span class="code-snippet">01010111</span>
+        <span class="code-snippet">01001111</span>
+        <span class="code-snippet">01010111</span>
+
+        <label for="answer3">Skriv inn summen:</label><br>
+        <input type="text" id="answer3" name="answer3" placeholder="Summen av de tre tallene">
+        <br>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+    </div>
+
+    <script>
+        function sjekkSvar() {
+            const korrektSvar = "253"; // 87 + 79 + 87
+            const brukerSvar = document.getElementById('answer3').value.trim();
+            const oppgaveId = 'oppgave3';
+            const nesteSide = 'oppgave4.html';
+
+            if (brukerSvar === korrektSvar) {
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
+            } else {
+                let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
+                feilAntall++;
+                sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
+                sessionStorage.setItem('returnTo', window.location.pathname.split('/').pop());
+                sessionStorage.setItem('currentTaskID', oppgaveId);
+                window.location.href = 'feil.html';
+            }
+        }
+    </script>
+</body>
+</html>
