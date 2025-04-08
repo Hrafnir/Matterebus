@@ -20,7 +20,7 @@
         <label for="answer10">Skriv inn resultatet for 10:</label><br>
         <input type="text" id="answer10" name="answer10" placeholder="Hva kommer ut?">
         <br>
-        <button onclick="sjekkSvar()">Åpne siste dør</button>
+        <button onclick="sjekkSvar()">Lås opp neste dør</button>
     </div>
 
     <script>
@@ -28,7 +28,7 @@
             const korrektSvar = "31"; // Regel: inn * 3 + 1
             const brukerSvar = document.getElementById('answer10').value.trim();
             const oppgaveId = 'oppgave10';
-            const nesteSide = 'ferdig.html'; // Siste oppgave fører til ferdigsiden
+            const nesteSide = 'oppgave11.html'; // ENDRET: Går nå til oppgave 11
 
             if (brukerSvar === korrektSvar) {
                  sessionStorage.removeItem('feil_' + oppgaveId);
