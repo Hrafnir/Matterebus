@@ -6,27 +6,26 @@
     <title>Den Digitale Labyrinten - Forskningslogikk</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Enkel stil for hint-listen */
+        /* Stiler fra forrige versjon beholdes */
         .hint-list {
             text-align: left;
-            display: inline-block; /* Sentrerer listen i containeren */
+            display: inline-block;
             margin-top: 15px;
             background-color: rgba(0,0,0,0.1);
             padding: 15px 25px;
             border-radius: 5px;
             border-left: 3px solid #00bcd4;
-            max-width: 90%; /* Begrenser bredden på listen */
+            max-width: 90%;
         }
         .hint-list li {
-            margin-bottom: 10px; /* Bedre avstand mellom hint */
+            margin-bottom: 10px;
         }
-        /* Stil for å fremheve elementer i teksten */
         .element {
-            color: #00e0e0; /* Litt lysere cyan */
+            color: #00e0e0;
             font-weight: bold;
         }
         .code-format {
-            color: #ffb86c; /* Oransje for kodeformat */
+            color: #ffb86c;
             font-family: monospace;
         }
     </style>
@@ -46,6 +45,7 @@
             <li>Clara bruker Mikroskopet.</li>
             <li>David er IKKE ved stasjon Delta.</li>
             <li>Personen ved stasjon Gamma jobber med Kryptografi.</li>
+            <li><strong>(Nytt Hint!) David er forskeren som jobber med Kryptografi.</strong></li>
         </ul>
 
         <p>For å låse opp neste dør, må du finne ut: <strong>Hvilket prosjekt jobber Ben med, og hvilket verktøy bruker Ada?</strong></p>
@@ -59,81 +59,43 @@
 
     <script>
         function sjekkSvar() {
-            /* Løsning:
+            /* Løsning (samme som før, men lettere å dedusere):
                1. Ada = Alfa (Hint 1)
                2. Clara = Mikroskop (Hint 5)
                3. Robotikk = Beta (Hint 4)
-               4. Gamma = Krypto (Hint 7)
-               5. David != Delta (Hint 6). Siden Ada=Alfa, Clara/Ben/David må være Beta/Gamma/Delta.
-               6. Clara = Mikroskop. Kan hun være Beta/Robotikk? Ja. Kan hun være Gamma/Krypto? Ja. Kan hun være Delta? Ja.
-               7. David = Gamma = Krypto (fra 4 & 7). David bruker ikke Mikroskop (Clara har det). David != Delta (6). David må være Gamma.
-               8. Ben != Delta (siden David ikke er der, og Ada/Clara heller ikke er der, må Ben være der). Nei, vent. Ada=Alfa. Clara= ?. Ben=?. David=Gamma=Krypto. Stasjoner igjen Beta, Delta for Clara, Ben.
-               9. Siden Robotikk=Beta (4), må enten Clara eller Ben være på Beta.
-               10. Hvis Clara=Beta -> Clara=Robotikk=Mikroskop. Dette er en mulig løsning.
-               11. Hvis Ben=Beta -> Ben=Robotikk. Ben != Krypto (3) - OK. Ben bruker ikke Pipette (3).
-               12. Personen ved stasjon Gamma (David) jobber med Krypto (7).
-               13. David=Gamma=Krypto. Han bruker Laser/Pipette/Server.
-               14. Laser = Biotek (Hint 2). Siden David=Krypto, kan han ikke bruke Laser. David bruker Pipette/Server.
-               15. Clara = Mikroskop (5). La oss anta Clara=Beta=Robotikk (fra 10).
-               16. Da gjenstår: Ada=Alfa, Clara=Beta=Robotikk=Mikroskop, David=Gamma=Krypto, Ben=Delta.
-               17. Ben=Delta. Ben != Krypto (3). Ben != Pipette (3). Ben jobber med AI/Biotek. Ben bruker Laser/Server.
-               18. Laser = Biotek (2). Hvis Ben=Laser -> Ben=Biotek. (Ben=Delta=Laser=Biotek)
-               19. Hvis Ben=Server -> Ben=AI. (Ben=Delta=Server=AI)
-               20. Ada=Alfa. Prosjekt AI/Biotek. Verktøy Laser/Server/Pipette.
-               21. David=Gamma=Krypto. Verktøy Laser/Server/Pipette. Siden Laser=Biotek, David != Laser. David bruker Server/Pipette.
-
-               22. Test case 1: Ben=Delta=Laser=Biotek.
-                   - Ada=Alfa. Prosjekt igjen: AI. Verktøy igjen: Server, Pipette.
-                   - David=Gamma=Krypto. Verktøy igjen: Server, Pipette.
-                   - Dette gir ikke unik løsning for Ada/Davids verktøy. Noe er feil.
-
-               23. Gå tilbake. Hva om Clara IKKE var på Beta?
-                   - Ada=Alfa. David=Gamma=Krypto. Clara=Mikroskop. Robotikk=Beta.
-                   - Siden David=Gamma, må Clara/Ben være på Beta/Delta.
-                   - Siden Robotikk=Beta, må den som er på Beta jobbe med Robotikk.
-                   - Kan Clara være på Beta? Clara=Beta=Robotikk=Mikroskop. Ja.
-                   - Kan Ben være på Beta? Ben=Beta=Robotikk. Ben!=Pipette, Ben!=Krypto. Ben bruker Laser/Server.
-                   - La oss anta Clara ER på Beta: Clara=Beta=Robotikk=Mikroskop.
-                   - Da MÅ Ben være på Delta: Ben=Delta. Ben!=Pipette, Ben!=Krypto. Prosjekt: AI/Biotek. Verktøy: Laser/Server.
-                   - David=Gamma=Krypto. Verktøy: Laser/Server/Pipette. David != Laser (siden Laser=Biotek). David bruker Server/Pipette.
-                   - Ada=Alfa. Prosjekt: AI/Biotek. Verktøy: Laser/Server/Pipette.
-
-                   - Ben (Delta) prosjekt: AI/Biotek. Verktøy: Laser/Server.
-                   - Ada (Alfa) prosjekt: AI/Biotek. Verktøy: Laser/Server/Pipette.
-                   - David (Gamma) prosjekt: Krypto. Verktøy: Server/Pipette.
-
-                   - Laser=Biotek (2).
-                   - Enten Ben=Biotek=Laser (ved Delta) ELLER Ada=Biotek=Laser (ved Alfa).
-
-                   - Case A: Ben=Delta=Laser=Biotek.
-                      - Da må Ada=Alfa=AI. Verktøy igjen for Ada: Server/Pipette.
-                      - Verktøy igjen for David: Server/Pipette.
-                      - Igjen, uvisst hvem som har Server/Pipette.
-
-                   - Case B: Ada=Alfa=Laser=Biotek.
-                      - Da må Ben=Delta=AI. Verktøy igjen for Ben: Server (siden han ikke kan ha Laser). Ben=Delta=AI=Server.
-                      - Verktøy igjen for David(Gamma, Krypto): Pipette. David=Gamma=Krypto=Pipette.
-                      - Dette ser ut til å løse alt!
-
-                   - Sjekk:
-                     - Ada: Biotek, Alfa, Laser (Ok, Laser=Biotek)
-                     - Ben: AI, Delta, Server (Ok, Ben!=Pipette, Ben!=Krypto)
-                     - Clara: Robotikk, Beta, Mikroskop (Ok, Robotikk=Beta, Clara=Mikroskop)
-                     - David: Krypto, Gamma, Pipette (Ok, David!=Delta, Gamma=Krypto)
-
-               - Løsningen er: Ada=Laser, Ben=AI.
+               4. David = Krypto (Nytt Hint 8)
+               5. Gamma = Krypto (Hint 7). Kombinert med 4: David = Gamma = Krypto.
+               6. David != Delta (Hint 6). Dette er nå overflødig, men bekrefter at David=Gamma.
+               7. Stasjoner igjen for Ben/Clara: Beta, Delta.
+               8. Clara=Mikroskop. Kan hun være på Beta (Robotikk)? Ja. Kan hun være på Delta? Ja.
+               9. Ben!=Krypto (Hint 3). OK, siden David=Krypto.
+               10. Siden David=Gamma og Ada=Alfa, må Ben/Clara være på Beta/Delta. Siden Robotikk=Beta, er enten Ben=Beta=Robotikk eller Clara=Beta=Robotikk.
+               11. Anta Clara=Beta=Robotikk=Mikroskop. (Passer med alt vi vet).
+               12. Da MÅ Ben være på Delta. Ben=Delta.
+               13. Ben != Pipette (Hint 3). Ben != Mikroskop (Clara har). Ben != Krypto (Hint 3). Prosjekt igjen for Ben: AI / Biotek. Verktøy igjen for Ben: Laser / Server.
+               14. Ada = Alfa. Prosjekt igjen: AI / Biotek. Verktøy igjen: Laser / Server / Pipette.
+               15. David = Gamma = Krypto. Verktøy igjen: Laser / Server / Pipette.
+               16. Laser = Biotek (Hint 2).
+               17. Hvem bruker Laser/Biotek? Ada (Alfa) eller Ben (Delta)?
+               18. Hvem bruker Pipette? Ben!=Pipette. Clara!=Pipette. Ada eller David?
+               19. Hvem bruker Server? Ada, Ben eller David?
+               20. David (Krypto) kan ikke bruke Laser (Biotek). David bruker Server/Pipette.
+               21. Ben (Delta) bruker Laser/Server.
+               22. Ada (Alfa) bruker Laser/Server/Pipette.
+               23. Hvis Ben=Laser=Biotek -> Ada=AI=Server/Pipette. David=Krypto=Server/Pipette. (Uklart hvem som har Server/Pipette).
+               24. Hvis Ada=Laser=Biotek -> Ben=AI=Server (kan ikke ha Laser). David=Krypto=Pipette (siste verktøy). (Dette løser alt).
+               25. Løsning: Ada=Alfa/Biotek/Laser, Ben=Delta/AI/Server, Clara=Beta/Robotikk/Mikroskop, David=Gamma/Krypto/Pipette.
+               26. Spørsmål: Bens prosjekt (AI) og Adas verktøy (Laser). Svar: AI-LASER.
             */
             const korrektSvar = "AI-LASER";
-            // Henter brukerens svar, fjerner whitespace, gjør om til store bokstaver
             const brukerSvar = document.getElementById('answer4').value.trim().toUpperCase();
-            const oppgaveId = 'oppgave4'; // ID for denne oppgaven
-            const nesteSide = 'oppgave5.html'; // Neste oppgave
+            const oppgaveId = 'oppgave4';
+            const nesteSide = 'oppgave5.html';
 
             if (brukerSvar === korrektSvar) {
-                 sessionStorage.removeItem('feil_' + oppgaveId); // Nullstill feil
-                 window.location.href = nesteSide; // Gå videre
+                 sessionStorage.removeItem('feil_' + oppgaveId);
+                 window.location.href = nesteSide;
             } else {
-                // Håndter feil svar som før
                 let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
                 feilAntall++;
                 sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
