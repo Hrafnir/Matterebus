@@ -28,68 +28,68 @@
             const returSide = sessionStorage.getItem('returnTo') || 'index.html'; // Fallback
             const feilAntall = parseInt(sessionStorage.getItem('feil_' + taskId) || '1'); // Minst 1 feil
 
-            // ===========================================
-            // ===== HINT DATABASE (OPPDATERT) =========
-            // ===========================================
+            // Hint Database (Inkluderer hint for oppg 11)
             const hintDatabase = {
-                 'oppgave1': [ // Tallsekvens 1, 2, 4, 7, 11 -> sum
+                 'oppgave1': [
                      "Hint 1: Se på *økningen* mellom tallene.",
                      "Hint 2: Hva er 2-1? Hva er 4-2? Hva er 7-4?",
                      "Hint 3: Økningen er +1, +2, +3, +4... Fortsett mønsteret for å finne de tre neste tallene, og summer dem."
                  ],
-                 'oppgave2': [ // Pigpen "LEIBNIZ VAR KUL"
+                 'oppgave2': [
                      "Hint 1: Bruk nøkkelbildet. Finn symbolet for 'L', så 'E', så 'I', osv.",
                      "Hint 2: Husk å inkludere mellomrommene i setningen når du skriver svaret.",
                      "Hint 3: Setningen som søkes er 'LEIBNIZ VAR KUL'. Pass på stavingen og bruk store bokstaver."
                  ],
-                  'oppgave3': [ // Binær 01101001, 10010110, 00111011 -> sum
+                  'oppgave3': [
                      "Hint 1: Husk posisjonsverdiene for 8-bits binærtall: 128, 64, 32, 16, 8, 4, 2, 1 (fra venstre).",
                      "Hint 2: For `01101001`: (0*128)+(1*64)+(1*32)+(0*16)+(1*8)+(0*4)+(0*2)+(1*1) = ? Gjør det samme for de andre to tallene.",
                      "Hint 3: De tre tallene som skal summeres er 105, 150 og 59. Hva blir summen?"
                  ],
-                 'oppgave4': [ // Forskningslogikk -> Ben's project (AI), Ada's tool (Laser)
+                 'oppgave4': [
                      "Hint 1: Start med en tabell (Forskere vs Stasjoner/Prosjekt/Verktøy). Plasser den sikre informasjonen først: Ada=Alfa, Clara=Mikroskop, Robotikk=Beta, David=Krypto, Gamma=Krypto.",
                      "Hint 2: Hvem MÅ være på stasjon Gamma (Hint 7+8)? Hvem MÅ da være på stasjon Delta, siden du vet hvor Ada og David er?",
                      "Hint 3: Nå vet du alles stasjoner. Hvor er Clara (hun har Mikroskop)? Plasser Robotikk (Beta). Bruk hint 2 (Laser=Biotek) for å finne ut hvem som har Biotek. Ben kan ikke ha Krypto eller Pipette. Hva gjenstår for Ben og Ada?",
-                     "Hint 4: Hele løsningen er: Ada=Alfa/Biotek/Laser, Ben=Delta/AI/Server, Clara=Beta/Robotikk/Mikroskop, David=Gamma/Krypto/Pipette. Dobbeltsjekk hva spørsmålet spør om og formater svaret riktig: PROSJEKT-VERKTØY." // Gir mer info ved flere feil
+                     "Hint 4: Hele løsningen er: Ada=Alfa/Biotek/Laser, Ben=Delta/AI/Server, Clara=Beta/Robotikk/Mikroskop, David=Gamma/Krypto/Pipette. Dobbeltsjekk hva spørsmålet spør om og formater svaret riktig: PROSJEKT-VERKTØY."
                  ],
-                 'oppgave5': [ // Base-6 '213' -> base-10
+                 'oppgave5': [
                      "Hint 1: I base-6 representerer sifrene (fra høyre) 6^0 (1), 6^1 (6), 6^2 (36), osv.",
                      "Hint 2: Tallet '213' i base-6 betyr (2 * 6^2) + (1 * 6^1) + (3 * 6^0).",
                      "Hint 3: Regn ut 2*36 + 1*6 + 3*1."
                  ],
-                  'oppgave6': [ // Trekant-telling i firkant med kryss
+                  'oppgave6': [
                      "Hint 1: Det er 4 små trekanter (i hjørnene).",
                      "Hint 2: Diagonalene deler firkanten i større trekanter. Hvor mange?",
                      "Hint 3: Det er 4 små + 4 store = 8 totalt."
                  ],
-                  'oppgave7': [ // ("Tenk på et tall" -> x*4-7)*2=50
+                  'oppgave7': [
                      "Hint 1: Tenk baklengs. Hva var tallet *før* det ble doblet til 50?",
                      "Hint 2: Når du har tallet før doblingen, hva var det *før* 7 ble trukket fra?",
                      "Hint 3: Når du har tallet før -7, hva var det *før* det ble ganget med 4?"
                  ],
-                 'oppgave8': [ // Symbolvekt
+                 'oppgave8': [
                     "Hint 1: Start med den enkleste ligningen. Vekt 3: ▲ + ■ = 15.",
                     "Hint 2: Bruk Vekt 2 (▲ = ■ + ■) og sett inn i Vekt 3. Da har du en ligning med bare ■.",
                     "Hint 3: Finn ■, deretter ▲, og til slutt ⚪ ved å bruke Vekt 1."
                  ],
-                 'oppgave9': [ // Produkt av 3 primtall etter 10
+                 'oppgave9': [
                     "Hint 1: List opp tallene etter 10: 11, 12, 13, 14, 15, 16, 17, 18...",
                     "Hint 2: Hvilke av disse er primtall (kun delelig med 1 og seg selv)?",
                     "Hint 3: De tre første primtallene etter 10 er 11, 13, og 17. Multipliser dem."
                  ],
-                 'oppgave10': [ // Funksjonsmaskin Inn*3+1
+                 'oppgave10': [
                     "Hint 1: Se etter et mønster mellom 'Inn' og 'Ut'. Hva skjer fra 2 til 7? Fra 5 til 16?",
                     "Hint 2: Prøv å gange 'Inn' med et tall, og deretter legge til/trekke fra et annet tall. (Inn * A + B = Ut)",
                     "Hint 3: Regeln er 'Inn * 3 + 1'. Bruk den på tallet 10."
+                 ],
+                  'oppgave11': [ // Morse "MATEMATIKK"
+                     "Hint 1: Bruk morsealfabetet på siden. Korte blink/pip er prikker (.), lange er streker (-).",
+                     "Hint 2: Lytt/se nøye etter pausene. En kort pause er mellom prikker/streker i samme bokstav. En litt lengre pause er mellom bokstaver.",
+                     "Hint 3: Ordet som sendes er 'MATEMATIKK'."
                  ]
              };
-            // ===========================================
-            // ===========================================
 
             let hintTekst = "Les oppgaven nøye igjen og dobbeltsjekk utregningen/logikken din."; // Standard hint
             if (hintDatabase[taskId] && hintDatabase[taskId].length > 0) {
-                // Velg hint basert på antall feil, men ikke gå utover antall tilgjengelige hint
                 let hintNiva = Math.min(feilAntall - 1, hintDatabase[taskId].length - 1);
                 hintTekst = hintDatabase[taskId][hintNiva];
             }
@@ -97,8 +97,7 @@
 
             // Start nedtelling
             let tidIgjen = 10 * feilAntall;
-            // Sett et tak på ventetid på 60 sekunder
-            tidIgjen = Math.min(tidIgjen, 60);
+            tidIgjen = Math.min(tidIgjen, 60); // Maks 60 sek
 
             const timerDisplay = document.getElementById('timer-display');
             timerDisplay.innerText = tidIgjen;
@@ -108,9 +107,9 @@
                 timerDisplay.innerText = tidIgjen;
                 if (tidIgjen <= 0) {
                     clearInterval(nedtellingsInterval);
-                    window.location.href = returSide; // Gå tilbake til oppgaven
+                    window.location.href = returSide;
                 }
-            }, 1000); // Kjør hvert sekund
+            }, 1000);
         };
     </script>
 </body>
