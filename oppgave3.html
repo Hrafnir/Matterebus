@@ -4,16 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Den Digitale Labyrinten - Oppgave 3</title>
+    <!-- Linker til CSS-filen din -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Oppgave 3: Binær Beskjed</h1>
-        <p>En dataterminal viser tre tall i binærkode. Oversett hvert tall til vårt vanlige titallssystem (base-10). Koden for å komme videre er <strong>summen</strong> av disse tre tallene.</p>
-        <p>Tallene er:</p>
-        <span class="code-snippet">01010111</span>
-        <span class="code-snippet">01001111</span>
-        <span class="code-snippet">01010111</span>
+        <h1>Oppgave 3: Binær Kode Lås</h1>
+
+        <!-- Intro om binærtall og Leibniz -->
+        <p>Visste du at datamaskiner tenker med bare to sifre: 0 og 1? Dette kalles det <strong>binære tallsystemet</strong> (base-2). Den berømte matematikeren Gottfried Wilhelm Leibniz var dypt fascinert av dette systemet for over 300 år siden! Han så på 1 som et symbol for Gud og 0 som et symbol for tomrommet (intet) – grunnlaget for alt!</p>
+
+        <!-- Forklaring av konvertering -->
+        <p>Denne låsen bruker nettopp binærkode. For å åpne den, må du oversette hvert av de tre 8-sifrede binære tallene under til vårt vanlige titallssystem (base-10). Husk at i et 8-bits tall representerer sifrene (fra venstre mot høyre) verdiene: <strong>128, 64, 32, 16, 8, 4, 2, 1</strong>. Du summerer verdiene der det står '1'.</p>
+        <p>Eksempel: <span class="code-snippet">00001011</span> = 8 + 2 + 1 = 11.</p>
+
+        <p>Koden for å komme videre er <strong>summen</strong> av de tre tallene du får etter oversettingen.</p>
+
+        <!-- Nye, varierte binærtall -->
+        <p>Tallene på låsen er:</p>
+        <span class="code-snippet">01101001</span>  <!-- 64+32+8+1 = 105 -->
+        <span class="code-snippet">10010110</span>  <!-- 128+16+4+2 = 150 -->
+        <span class="code-snippet">00111011</span>  <!-- 32+16+8+2+1 = 59 -->
 
         <label for="answer3">Skriv inn summen:</label><br>
         <input type="text" id="answer3" name="answer3" placeholder="Summen av de tre tallene">
@@ -23,15 +34,17 @@
 
     <script>
         function sjekkSvar() {
-            const korrektSvar = "253"; // 87 + 79 + 87
+            // Oppdater korrekt svar basert på de nye tallene (105 + 150 + 59)
+            const korrektSvar = "314";
             const brukerSvar = document.getElementById('answer3').value.trim();
-            const oppgaveId = 'oppgave3';
-            const nesteSide = 'oppgave4.html';
+            const oppgaveId = 'oppgave3'; // ID for denne oppgaven
+            const nesteSide = 'oppgave4.html'; // Neste oppgave
 
             if (brukerSvar === korrektSvar) {
-                 sessionStorage.removeItem('feil_' + oppgaveId);
-                 window.location.href = nesteSide;
+                 sessionStorage.removeItem('feil_' + oppgaveId); // Nullstill feil
+                 window.location.href = nesteSide; // Gå videre
             } else {
+                // Håndter feil svar som før
                 let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
                 feilAntall++;
                 sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
