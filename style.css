@@ -1,83 +1,173 @@
+/* Importer fonter (valgfritt, men kan heve utseendet) */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
 body {
-    font-family: sans-serif;
-    background-color: #f0f0f0;
+    /* font-family: 'Roboto', sans-serif; */ /* Basis skrifttype for lesbarhet */
+    font-family: monospace; /* Mer tech-følelse */
+    background-color: #1a1a1a; /* Mørk grå bakgrunn */
+    /* Legg til en subtil gradient eller mønster hvis ønskelig */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)),
+                      radial-gradient(circle at top left, rgba(0, 120, 150, 0.1), transparent 40%),
+                      radial-gradient(circle at bottom right, rgba(80, 0, 100, 0.1), transparent 50%);
+    color: #e0e0e0; /* Lys grå standardtekst */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    padding: 15px; /* Litt luft rundt på små skjermer */
+    box-sizing: border-box;
 }
 
 .container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #2c2c2c; /* Litt lysere mørk boks */
+    padding: 30px 40px;
+    border-radius: 10px; /* Litt mer avrundet */
+    /* Legg til en subtil "glow" eller kantlinje */
+    border: 1px solid #00bcd4; /* Cyan kantlinje */
+    box-shadow: 0 0 20px rgba(0, 188, 212, 0.2), /* Cyan glow */
+                inset 0 0 15px rgba(0, 0, 0, 0.3); /* Innvendig skygge for dybde */
     text-align: center;
-    max-width: 600px;
+    max-width: 700px; /* Litt bredere */
+    width: 100%; /* Responsiv */
+    transition: transform 0.3s ease; /* Litt animasjon ved interaksjon (hvis ønskelig) */
+}
+
+/* container:hover {
+    transform: scale(1.01);
+} */
+
+h1, h2 {
+    /* font-family: 'Orbitron', sans-serif; */ /* Tech-inspirert font for overskrifter */
+     font-family: monospace; /* Mer tech-følelse */
+    color: #ffffff; /* Hvit overskrift */
+    /* Subtil tekst-skygge for "glow"-effekt */
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6); /* Cyan glow */
+    letter-spacing: 1px; /* Litt luftigere */
+    margin-bottom: 20px;
 }
 
 h1 {
-    color: #333;
+    font-size: 2.5em; /* Større hovedtittel */
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #00bcd4; /* Cyan farge for oppgavetittel */
+    text-shadow: 0 0 6px rgba(0, 188, 212, 0.5);
 }
 
 p {
-    color: #555;
-    line-height: 1.6;
+    color: #cccccc; /* Litt lysere grå for brødtekst */
+    line-height: 1.7; /* Bedre lesbarhet */
+    font-size: 1.1em;
+}
+
+label {
+    color: #00bcd4; /* Cyan for labels */
+    font-weight: bold;
+    display: block; /* Sørger for at den er over input */
+    margin-top: 20px;
+    margin-bottom: 5px;
 }
 
 input[type="text"] {
-    padding: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace; /* Monospace for kode/svar-følelse */
+    padding: 12px 15px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #555; /* Mørkere grå kantlinje */
+    background-color: #1e1e1e; /* Samme som body bakgrunn */
+    color: #e0e0e0; /* Lys tekst inni */
+    border-radius: 5px;
     width: 80%;
-    box-sizing: border-box; /* Inkluderer padding i bredden */
+    max-width: 300px; /* Ikke for bred på store skjermer */
+    box-sizing: border-box;
+    font-size: 1.1em;
+    text-align: center;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #00ffff; /* Lysere cyan på fokus */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Mer glow på fokus */
+    outline: none; /* Fjerner standard nettleser-outline */
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #007bff;
+    /* font-family: 'Orbitron', sans-serif; */
+     font-family: monospace; /* Mer tech-følelse */
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #007788, #00bcd4); /* Gradient */
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Mørk skygge */
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(45deg, #00bcd4, #00ffff); /* Lysere gradient ved hover */
+    transform: translateY(-2px); /* Løfter knappen litt */
+    box-shadow: 0 6px 12px rgba(0, 255, 255, 0.3); /* Lysere glow ved hover */
+}
+
+button:active {
+    transform: translateY(0); /* Tilbake når trykket */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .hint-section, .timer-section {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e9ecef;
-    border-radius: 4px;
+    margin-top: 25px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2); /* Mørk, semi-transparent bakgrunn */
+    border-radius: 5px;
+    border: 1px dashed #555; /* Stiplet kantlinje */
+}
+
+.hint-section strong {
+    color: #00bcd4; /* Cyan for "Hint:" */
+    display: block;
+    margin-bottom: 10px;
+}
+
+#hint-display {
+    color: #cccccc;
+    font-style: italic;
 }
 
 #timer-display {
     font-weight: bold;
-    font-size: 1.2em;
-    color: #dc3545; /* Rød farge for timer */
+    font-size: 1.5em; /* Større timer */
+    color: #ff6b6b; /* Mer synlig "feil"-farge */
+    text-shadow: 0 0 5px rgba(255, 107, 107, 0.5); /* Rødlig glow */
 }
 
 .code-snippet {
-    font-family: monospace;
-    background-color: #e3e3e3;
-    padding: 5px 10px;
-    border-radius: 3px;
-    display: inline-block; /* For å unngå full bredde */
-    margin: 5px;
+    font-family: 'Courier New', Courier, monospace; /* Klassisk kode-font */
+    background-color: #111; /* Veldig mørk, som terminal */
+    color: #32cd32; /* Limegrønn tekst */
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    display: inline-block;
+    margin: 8px 5px;
+    white-space: nowrap; /* Hindrer linjeskift inni koden */
 }
 
+/* Stil for Pigpen-bilde (hvis det er lyst) */
 img.pigpen-key {
     max-width: 80%;
     height: auto;
     margin-top: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #ddd; /* Lys bakgrunn hvis bildet har transparent bakgrunn */
+    padding: 10px; /* Litt luft rundt nøkkelen */
 }
 
 /* Stil for vekter i oppgave 8 */
@@ -85,21 +175,66 @@ img.pigpen-key {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px dashed #ccc;
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px dashed #555;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 .vekt-side {
     display: flex;
     align-items: center;
 }
 .vekt-symbol {
-    font-size: 1.5em;
-    margin: 0 5px;
-    padding: 5px;
-    border: 1px solid #aaa;
-    border-radius: 50%; /* Gjør dem til sirkler eller avrundet */
-    min-width: 30px; /* Sikrer litt størrelse */
+    font-size: 1.8em; /* Større symboler */
+    margin: 0 8px;
+    padding: 8px;
+    border: 1px solid #666;
+    border-radius: 50%;
+    min-width: 40px; /* Sikrer størrelse */
+    background-color: #3a3a3a; /* Mørk bakgrunn for symboler */
+    color: #fff;
+    text-align: center;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5); /* Innvendig skygge */
 }
-.pluss { margin: 0 5px; }
-.erlik { font-size: 1.5em; margin: 0 10px; }
+.pluss { margin: 0 8px; font-size: 1.5em; color: #aaa; }
+.erlik { font-size: 1.8em; margin: 0 15px; color: #00bcd4; font-weight: bold; }
+
+/* Lenker (hvis noen brukes) */
+a {
+    color: #00bcd4;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+a:hover {
+    color: #00ffff;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+/* Responsive justeringer */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    p {
+        font-size: 1em;
+    }
+    input[type="text"] {
+        width: 90%;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+    .vekt-symbol {
+        font-size: 1.5em;
+        min-width: 35px;
+        padding: 6px;
+    }
+}
