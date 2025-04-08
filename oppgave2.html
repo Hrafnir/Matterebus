@@ -4,36 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Den Digitale Labyrinten - Oppgave 2</title>
+    <!-- Linker til den CSS-filen du bruker (med @font-face for Pigpen) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Oppgave 2: Kryptisk Symbol</h1>
-        <p>Du fant en gammel nøkkelartefakt og en beskjed risset inn på veggen. Bruk nøkkelen til å tyde beskjeden. Koden for å komme videre er ordet du finner.</p>
-        <img src="img/pigpen_key.png" alt="Pigpen Chiffer Nøkkel" class="pigpen-key">
-        <p>Beskjeden:</p>
-        <!-- Her må du lage Pigpen-symbolene for NESTE -->
-        <!-- La oss bruke en tekstlig representasjon foreløpig -->
-        <p style="font-size: 2em; letter-spacing: 5px;">[symbol for N] [symbol for E] [symbol for S] [symbol for T] [symbol for E]</p>
-        <p>(Du må lage et bilde av symbolene over, eller finne en font)</p>
+        <h1>Oppgave 2: Kryptisk Hyllest</h1>
+        <p>På en støvete terminal finner du en hyllest til en kjent matematiker, skrevet med et merkelig symbolsett. Bruk nøkkelartefakten (vist under) til å tyde beskjeden. Koden for å komme videre er setningen du finner.</p>
 
-        <label for="answer2">Skriv inn ordet:</label><br>
-        <input type="text" id="answer2" name="answer2" placeholder="Ordet fra symbolene">
+        <!-- Bildet av Pigpen-nøkkelen (sørg for at stien er korrekt) -->
+        <img src="img/pigpen_key.png" alt="Pigpen Chiffer Nøkkel" class="pigpen-key">
+
+        <p>Hyllesten:</p>
+        <!-- Her vises "LEIBNIZ VAR KUL" rendret med Pigpen-fonten via CSS-klassen -->
+        <!-- Merk: Hvordan fonten håndterer mellomrom kan variere. Noen viser et vanlig mellomrom, andre ingenting. -->
+        <p class="pigpen-encoded-text">LEIBNIZ VAR KUL</p>
+
+        <label for="answer2">Skriv inn setningen (med store bokstaver):</label><br>
+        <!-- La placeholderen reflektere at det er en setning -->
+        <input type="text" id="answer2" name="answer2" placeholder="Xxxxxxx xxx xxx">
         <br>
         <button onclick="sjekkSvar()">Lås opp neste dør</button>
     </div>
 
     <script>
         function sjekkSvar() {
-            const korrektSvar = "NESTE";
-            const brukerSvar = document.getElementById('answer2').value.trim().toUpperCase(); // Gjør om til store bokstaver
-            const oppgaveId = 'oppgave2';
-            const nesteSide = 'oppgave3.html';
+            // Oppdater det korrekte svaret til den nye setningen
+            const korrektSvar = "LEIBNIZ VAR KUL";
+            // Henter brukerens svar, fjerner whitespace FØR/ETTER, og gjør om til store bokstaver
+            // Vi beholder mellomrom inne i svaret for sammenligning her.
+            const brukerSvar = document.getElementById('answer2').value.trim().toUpperCase();
+            const oppgaveId = 'oppgave2'; // ID for denne oppgaven
+            const nesteSide = 'oppgave3.html'; // Siden man går til ved riktig svar
 
             if (brukerSvar === korrektSvar) {
-                 sessionStorage.removeItem('feil_' + oppgaveId);
-                 window.location.href = nesteSide;
+                 sessionStorage.removeItem('feil_' + oppgaveId); // Nullstill feilteller
+                 window.location.href = nesteSide; // Gå videre
             } else {
+                // Håndter feil svar som før
                 let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
                 feilAntall++;
                 sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
