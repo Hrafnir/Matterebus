@@ -3,38 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Den Digitale Labyrinten - Oppgave 4</title>
+    <title>Den Digitale Labyrinten - Terminal Gåten</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Enkel visuell representasjon av terminalene og ledningene */
+        .terminal-diagram {
+            border: 2px dashed #555;
+            padding: 20px;
+            margin: 25px auto;
+            max-width: 400px;
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .terminal {
+            border: 2px solid #888;
+            background-color: #3a3a3a;
+            width: 60px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            position: relative; /* For ledning-effekt */
+        }
+        .terminal::before { /* Simulerer ledning inn */
+            content: '';
+            position: absolute;
+            bottom: -15px; /* Plasserer under boksen */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px; /* Tykkelse på ledning */
+            height: 15px; /* Lengde på synlig del */
+            background-color: #777; /* Generisk farge */
+            border-radius: 0 0 3px 3px;
+        }
+        .terminal-label {
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #fff;
+        }
+        .terminal-info {
+            font-size: 0.8em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+        /* Farger for ledningene (kan legges til dynamisk eller manuelt når løsningen er kjent) */
+        /* .terminal-a::before { background-color: red; } */
+        /* .terminal-b::before { background-color: yellow; } */
+        /* .terminal-c::before { background-color: blue; } */
+        /* .terminal-d::before { background-color: lime; } */
+
+        .hint-list {
+            text-align: left;
+            display: inline-block; /* Sentrerer listen i containeren */
+            margin-top: 15px;
+            background-color: rgba(0,0,0,0.1);
+            padding: 15px 25px;
+            border-radius: 5px;
+            border-left: 3px solid #00bcd4;
+        }
+        .hint-list li {
+            margin-bottom: 10px; /* Bedre avstand mellom hint */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Oppgave 4: Robot Vokterne</h1>
-        <p>Fire roboter (Rød, Blå, Grønn, Gul) vokter fire utganger (Nord, Sør, Øst, Vest). Finn ut hvilken robot som vokter <strong>Nord-utgangen</strong> ved hjelp av disse hintene:</p>
-        <ol style="text-align: left; display: inline-block;">
-            <li>Rød robot står ikke ved Vest eller Sør.</li>
-            <li>Blå robot står ved siden av Grønn robot.</li>
-            <li>Gul robot står lengst unna Rød robot (målt i antall 'steg' N-Ø-S-V).</li>
-            <li>Grønn robot står ved Øst-utgangen.</li>
-        </ol>
-        <p>Koden er navnet på roboten ved Nord-utgangen (med store bokstaver).</p>
+        <h1>Oppgave 4: Terminal Gåten</h1>
+        <p>Du står foran et koblingspanel. Fire fargede ledninger (Rød, Blå, Grønn, Gul) går inn i fire nummererte terminaler (A, B, C, D). Hver ledning har én unik funksjon (Strøm, Data, Jord, Signal). Du må finne ut hvilken terminal den <strong>Gule</strong> ledningen er koblet til for å deaktivere låsen.</p>
 
-        <label for="answer4">Skriv inn navnet på roboten:</label><br>
-        <input type="text" id="answer4" name="answer4" placeholder="Fargen på roboten">
+        <!-- Visuell representasjon -->
+        <div class="terminal-diagram">
+            <div class="terminal terminal-a">
+                <div class="terminal-label">A</div>
+                <div class="terminal-info">?</div>
+            </div>
+            <div class="terminal terminal-b">
+                <div class="terminal-label">B</div>
+                <div class="terminal-info">?</div>
+            </div>
+            <div class="terminal terminal-c">
+                <div class="terminal-label">C</div>
+                <div class="terminal-info">?</div>
+            </div>
+            <div class="terminal terminal-d">
+                <div class="terminal-label">D</div>
+                <div class="terminal-info">?</div>
+            </div>
+        </div>
+
+        <p>Bruk disse hintene for å løse gåten:</p>
+        <ul class="hint-list">
+            <li>Den Blå ledningen er koblet til Terminal C.</li>
+            <li>Ledningen i Terminal A er for "Data".</li>
+            <li>Den Røde ledningen er IKKE "Strøm".</li>
+            <li>"Signal"-ledningen er koblet til Terminal D.</li>
+            <li>Den Grønne ledningen er IKKE koblet til Terminal B.</li>
+        </ul>
+
+        <p>Koden er bokstaven til terminalen den Gule ledningen er koblet til (A, B, C eller D).</p>
+
+        <label for="answer4">Hvilken terminal har den Gule ledningen?</label><br>
+        <input type="text" id="answer4" name="answer4" placeholder="Terminal (A, B, C, D)">
         <br>
         <button onclick="sjekkSvar()">Lås opp neste dør</button>
     </div>
 
     <script>
         function sjekkSvar() {
-            const korrektSvar = "RØD";
+            // Løsning: Gul er koblet til Terminal B
+            const korrektSvar = "B";
+            // Gjør svaret om til store bokstaver og fjerner whitespace
             const brukerSvar = document.getElementById('answer4').value.trim().toUpperCase();
-            const oppgaveId = 'oppgave4';
-            const nesteSide = 'oppgave5.html';
+            const oppgaveId = 'oppgave4'; // ID for denne oppgaven
+            const nesteSide = 'oppgave5.html'; // Neste oppgave
 
             if (brukerSvar === korrektSvar) {
-                 sessionStorage.removeItem('feil_' + oppgaveId);
-                 window.location.href = nesteSide;
+                 sessionStorage.removeItem('feil_' + oppgaveId); // Nullstill feil
+                 window.location.href = nesteSide; // Gå videre
             } else {
+                // Håndter feil svar som før
                 let feilAntall = parseInt(sessionStorage.getItem('feil_' + oppgaveId) || '0');
                 feilAntall++;
                 sessionStorage.setItem('feil_' + oppgaveId, feilAntall);
