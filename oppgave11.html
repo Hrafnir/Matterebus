@@ -5,92 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Den Digitale Labyrinten - Morsemelding</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Ekstra stiler spesifikt for denne siden */
-        .morse-display {
-            margin: 25px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px; /* Mellomrom mellom elementene */
-        }
-
-        #morse-light {
-            width: 80px;
-            height: 80px;
-            background-color: #444; /* Mørk 'av'-tilstand */
-            border-radius: 50%; /* Sirkelformet lys */
-            border: 3px solid #666;
-            transition: background-color 0.05s ease-in-out; /* Rask overgang for blinking */
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        #morse-light.light-on {
-            background-color: #ffffaa; /* Lys gul 'på'-tilstand */
-            box-shadow: 0 0 25px rgba(255, 255, 170, 0.7); /* Gyllen glow */
-        }
-
-        .morse-visual {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.4em;
-            color: #32cd32; /* Grønn kode-farge */
-            letter-spacing: 3px;
-            word-spacing: 15px; /* Ekstra plass mellom 'ord' (her: bokstaver) */
-            background-color: #111;
-            padding: 10px 15px;
-            border-radius: 5px;
-            border: 1px solid #333;
-            max-width: 90%;
-            text-align: center;
-        }
-
-        #playButton {
-            background: linear-gradient(45deg, #1a759f, #1e96c8); /* Blåere knapp */
-            margin-top: 10px;
-        }
-        #playButton:hover {
-           background: linear-gradient(45deg, #1e96c8, #27b0e6);
-           box-shadow: 0 6px 12px rgba(39, 176, 230, 0.3);
-        }
-        #playButton:disabled { /* Stil for når knappen er deaktivert */
-            background: #555;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .morse-key {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(0,0,0,0.15);
-            border: 1px dashed #555;
-            border-radius: 5px;
-            max-width: 500px; /* Begrenser bredden på nøkkelen */
-            display: inline-block; /* For at max-width skal fungere skikkelig */
-        }
-        .morse-key h3 {
-            margin-top: 0;
-            color: #00bcd4;
-            text-shadow: none; /* Fjerner glow for bedre lesbarhet på nøkkelen */
-            font-size: 1.2em;
-        }
-        .morse-key dl {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsivt rutenett */
-            gap: 5px 15px; /* Mellomrom rad/kolonne */
-            text-align: left;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1em;
-        }
-        .morse-key dt {
-            font-weight: bold;
-            color: #fff;
-        }
-        .morse-key dd {
-            margin-left: 5px; /* Lite innrykk for koden */
-            color: #ccc;
-        }
-    </style>
+    <!-- Ingen <style> blokk her lenger, antar at CSS er flyttet til style.css -->
 </head>
 <body>
     <div class="container">
@@ -121,44 +36,42 @@
                 <div><dt>K</dt><dd>-.-</dd></div>      <div><dt>X</dt><dd>-..-</dd></div>
                 <div><dt>L</dt><dd>.-..</dd></div>     <div><dt>Y</dt><dd>-.--</dd></div>
                 <div><dt>M</dt><dd>--</dd></div>       <div><dt>Z</dt><dd>--..</dd></div>
-                <!-- Kan legge til tall hvis ønskelig -->
             </dl>
         </div>
 
         <label for="answer11">Skriv inn det dekodede ordet:</label><br>
         <input type="text" id="answer11" name="answer11" placeholder="Dekodet ord">
         <br>
-        <!-- Sjekk at nesteSide er korrekt (ferdig.html eller oppgave12.html) -->
-        <button onclick="sjekkSvar()">Lås opp neste dør</button>
+        <button onclick="sjekkSvar()">Lås opp siste dør</button> <!-- Justert tekst siden det er siste -->
     </div>
 
     <script>
         // Web Audio API for morse lyd
         let audioContext;
         const morseMap = {
-            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..',
-            ' ': '/' // Representerer mellomrom mellom ord (lengre pause)
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', ' ': '/'
         };
-        const dotDuration = 0.1; // Sekunder for en prikk
+        const dotDuration = 0.1; // Sekunder
         const dashDuration = dotDuration * 3;
-        const intraCharGap = dotDuration; // Gap mellom prikker/streker i et tegn
-        const interCharGap = dotDuration * 3; // Gap mellom tegn
-        const wordGap = dotDuration * 7; // Gap mellom ord
+        const intraCharGap = dotDuration;
+        const interCharGap = dotDuration * 3;
+        const wordGap = dotDuration * 7;
 
         const lightElement = document.getElementById('morse-light');
         const playButton = document.getElementById('playButton');
 
-        // Funksjon for å spille av ett signal (prikk eller strek)
         function playSignal(startTime, duration) {
             if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+             if (!audioContext) return; // Ikke fortsett hvis API ikke støttes
+
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
 
-            oscillator.type = 'sine'; // Standard pipelyd
-            oscillator.frequency.setValueAtTime(600, startTime); // Tonehøyde (Hz)
-            gainNode.gain.setValueAtTime(0, startTime); // Start stille
-            gainNode.gain.linearRampToValueAtTime(1, startTime + 0.01); // Raskt volum opp
-            gainNode.gain.linearRampToValueAtTime(0, startTime + duration - 0.01); // Raskt volum ned
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(600, startTime);
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(0.6, startTime + 0.01); // Litt lavere gain
+            gainNode.gain.linearRampToValueAtTime(0, startTime + duration - 0.01);
 
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
@@ -166,74 +79,59 @@
             oscillator.start(startTime);
             oscillator.stop(startTime + duration);
 
-            // Styr lyset
             setTimeout(() => lightElement.classList.add('light-on'), startTime * 1000);
             setTimeout(() => lightElement.classList.remove('light-on'), (startTime + duration) * 1000);
         }
 
-        // Funksjon for å spille av hele sekvensen
         async function playMorseSequence(message) {
             if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-             // Fortsett bare hvis audioContext ble opprettet
-            if (!audioContext) {
+             if (!audioContext) {
                  alert("Nettleseren din støtter ikke Web Audio API, lyden kan ikke spilles av.");
+                 playButton.disabled = false; // Enable button again
                  return;
-            }
-            // Sikrer at contexte er aktivt (kreves i noen nettlesere etter inaktivitet)
+             }
             if (audioContext.state === 'suspended') {
-                await audioContext.resume();
+                try { await audioContext.resume(); } catch(e) { console.error("Klarte ikke resume AudioContext:", e); playButton.disabled = false; return; }
             }
 
-            playButton.disabled = true; // Deaktiver knapp mens avspilling pågår
-            let currentTime = audioContext.currentTime + 0.1; // Liten buffer før start
+            playButton.disabled = true;
+            let currentTime = audioContext.currentTime + 0.1;
 
             for (const char of message.toUpperCase()) {
                 const sequence = morseMap[char];
                 if (sequence) {
-                    if (sequence === '/') { // Håndter mellomrom
-                        currentTime += wordGap - interCharGap; // Juster for forrige interCharGap
+                    if (sequence === '/') {
+                        currentTime += wordGap - interCharGap;
                     } else {
                         for (let i = 0; i < sequence.length; i++) {
                             const signal = sequence[i];
                             const duration = (signal === '.') ? dotDuration : dashDuration;
                             playSignal(currentTime, duration);
                             currentTime += duration;
-                            // Legg til gap mellom signaler i samme tegn
-                            if (i < sequence.length - 1) {
-                                currentTime += intraCharGap;
-                            }
+                            if (i < sequence.length - 1) currentTime += intraCharGap;
                         }
-                        // Legg til gap mellom tegn
                         currentTime += interCharGap;
                     }
                 }
-                 // Hvis tegnet ikke finnes i morseMap, ignoreres det (men legg til en liten pause?)
-                 // currentTime += interCharGap; // Eller håndter ukjente tegn annerledes
             }
 
-            // Vent til sekvensen er ferdig før knappen aktiveres igjen
-             const totalDurationMs = (currentTime - audioContext.currentTime) * 1000;
+            const totalDurationMs = (currentTime - audioContext.currentTime) * 1000;
             setTimeout(() => {
                 playButton.disabled = false;
-                // Sørg for at lyset er av til slutt
                 lightElement.classList.remove('light-on');
-            }, totalDurationMs + 50); // +50ms buffer
+            }, totalDurationMs + 50);
         }
 
-        // Legg til event listener på knappen
         playButton.addEventListener('click', () => {
-            // Hent teksten fra det visuelle displayet eller definer den her
-            const messageToPlay = "MATEMATIKK"; // Ordet som skal spilles
+            const messageToPlay = "MATEMATIKK";
             playMorseSequence(messageToPlay);
         });
 
-        // Sjekk svar funksjon
         function sjekkSvar() {
             const korrektSvar = "MATEMATIKK";
             const brukerSvar = document.getElementById('answer11').value.trim().toUpperCase();
             const oppgaveId = 'oppgave11';
-            // !!! VIKTIG: Sett riktig neste side her !!!
-            const nesteSide = 'ferdig.html'; // Gå til ferdigsiden (eller oppgave12.html hvis du lager flere)
+            const nesteSide = 'ferdig.html'; // Siste oppgave går til ferdigsiden
 
             if (brukerSvar === korrektSvar) {
                  sessionStorage.removeItem('feil_' + oppgaveId);
